@@ -8,6 +8,8 @@ left_role = 0
 right_role = 1
 
 df = pd.read_csv("reversal_data.csv")
+
+#add mps
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 print(device)
@@ -130,6 +132,15 @@ class RTPREncode(nn.Module):
         return result
 
 num_epochs = 75
+
+
+#map loss landscape with smaller model
+#use optuna for hyperparam optimization, do it for all 4 same sort of meta strategy
+#just do it with the gru, replicate tom's paper
+#figure if his measures are full sequence accuracy measures
+#find error rate by position for tpr > decoder
+#do same thing as bob's srn behavior 
+
 model = RTPREncode(61, 2, 128, 64, batch_size, model_size)
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-4)
 criterion = nn.MSELoss()
